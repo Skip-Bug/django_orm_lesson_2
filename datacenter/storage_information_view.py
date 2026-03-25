@@ -2,7 +2,6 @@ from datacenter.models import Visit
 from datacenter.models import Passcard
 from django.shortcuts import render
 from django.utils.timezone import localtime
-import datetime
 
 
 def format_duration(duration):
@@ -15,10 +14,14 @@ def format_duration(duration):
 
 
 def get_duration(visit):
-    now = localtime()
-    moscow_entered = localtime(visit.entered_at)
-    duration = now - moscow_entered
-    return duration, moscow_entered
+    entered = localtime(visit.entered_at)
+    if visit.leaved_at is None:
+        now = localtime()
+        duration = now - entered
+    else:
+        leaved = localtime(visit.leaved_at)
+        duration = leaved - entered
+    return duration, entered
 
 
 def storage_information_view(request):
@@ -27,11 +30,11 @@ def storage_information_view(request):
     visits = Visit.objects.filter(leaved_at__isnull=True)
 
     for visit in visits:
-        duration, moscow_entered = get_duration(visit)
+        duration, entered = get_duration(visit)
         non_closed_visits.append(
             {
                 'who_entered': visit.passcard.owner_name,
-                'entered_at': moscow_entered,
+                'entered_at': entered,
                 'duration': format_duration(duration),
             }
         )
