@@ -13,6 +13,7 @@ def format_duration(duration):
 
 
 def get_duration(visit):
+    """Получает длительность (в секундах)"""
     entered = localtime(visit.entered_at)
     if visit.leaved_at is None:
         now = localtime()
@@ -24,6 +25,7 @@ def get_duration(visit):
 
 
 def is_visit_long(visit, minutes=60):
+    """Проверяет длительность """
     duration, entered = get_duration(visit)
     is_long = duration > timedelta(minutes=minutes)
     return duration, entered, is_long
