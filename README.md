@@ -21,6 +21,8 @@ DB_NAME=имя базы
 DB_USER=имя пользователя
 DB_PASSWORD=пароль
 SECRET_KEY=код шифроваания
+ALLOWED_HOSTS=безопасный список хоста например
+ALLOWED_HOSTS=127.0.0.1, localhost, [::1]
 ```
 
 Python3 версии >=3.10 должен быть уже установлен.
@@ -35,9 +37,9 @@ pip install -r requirements.txt
 
 ### Как запустить
 ```
-python manage.py startserver
+python manage.py runserver
 ```
-Для работы с сервером могут понадобиться и другие команды их можно найти [здесь](ttps://docs.djangoproject.com/en/5.2/ref/django-admin/)
+Для работы с сервером могут понадобиться и другие команды их можно найти [здесь](https://docs.djangoproject.com/en/5.2/ref/django-admin/)
 
 После этого переходите по ссылке [127.0.0.1:8000](http://127.0.0.1:8000), вы увидите главную страницу.
 
