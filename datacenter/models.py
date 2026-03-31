@@ -3,17 +3,30 @@ from datetime import timedelta
 from django.utils.timezone import localtime
 
 
+SECONDS_PER_MINUTE = 60
+"""Количество секунд в одной минуте."""
+
+MINUTES_PER_HOUR = 60
+"""Количество минут в одном часе."""
+
+SECONDS_PER_HOUR = SECONDS_PER_MINUTE * MINUTES_PER_HOUR
+"""Количество секунд в одном часе (60 × 60 = 3600)."""
+
+DEFAULT_LONG_VISIT = 60
+"""Длительность визита для подозрения в минутах."""
+
+
 def format_duration(duration):
     """Форматирует timedelta в строку Ч:М:С."""
     total_seconds = int(duration.total_seconds())
-    hours = total_seconds // 3600
-    minutes = (total_seconds % 3600) // 60
-    seconds = total_seconds % 60
+    hours = total_seconds // SECONDS_PER_HOUR
+    minutes = (total_seconds % SECONDS_PER_HOUR) // SECONDS_PER_MINUTE
+    seconds = total_seconds % SECONDS_PER_MINUTE
     return f"{hours}:{minutes:02d}:{seconds:02d}"
 
 
 def get_duration(visit):
-    """Получает длительность (в секундах)"""
+    """Получает длительность (в секундах)."""
     entered = localtime(visit.entered_at)
     if visit.leaved_at is None:
         now = localtime()
@@ -21,14 +34,14 @@ def get_duration(visit):
     else:
         leaved = localtime(visit.leaved_at)
         duration = leaved - entered
-    return duration, entered
+    return duration
 
 
-def is_visit_long(visit, minutes=60):
-    """Проверяет длительность """
-    duration, entered = get_duration(visit)
+def is_visit_long(visit, minutes=DEFAULT_LONG_VISIT):
+    """Проверяет подозрительную длительность."""
+    duration = get_duration(visit)
     is_long = duration > timedelta(minutes=minutes)
-    return duration, entered, is_long
+    return is_long
 
 
 class Passcard(models.Model):
