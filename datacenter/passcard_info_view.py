@@ -12,7 +12,7 @@ def passcard_info_view(request, passcode):
     for visit in visits:
         duration = get_duration(visit)
         entered = localtime(visit.entered_at)
-        is_long = is_visit_long(visit, minutes=60)
+        is_long = is_visit_long(visit)
 
         this_passcard_visits.append({
             'entered_at': entered,
