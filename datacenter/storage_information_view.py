@@ -11,7 +11,7 @@ def storage_information_view(request):
     for visit in visits:
         duration = get_duration(visit)
         entered = localtime(visit.entered_at)
-        is_long = is_visit_long(visit, minutes=60)
+        is_long = is_visit_long(visit)
 
         non_closed_visits.append(
             {
