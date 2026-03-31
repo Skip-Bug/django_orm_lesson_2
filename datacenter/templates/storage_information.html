@@ -48,7 +48,7 @@
                         <td class="table-element">{{ visit.who_entered }}</td>
                             <td class="table-element"><strong>{{ visit.entered_at }}</strong></td>
                         <td class="table-element">{{ visit.duration }}</td>
-                        <td class="table-element">{{ visit.is_strange }}</td>
+                        <td class="table-element">{{ visit.is_strange|yesno:"<span style='background:#ffcccc;padding:2px 6px;border-radius:3px'>Да</span>,Нет"|safe }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
